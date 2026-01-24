@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>لعبة كلمات القرآن</title>
+    <style>
+        :root {
+            --correct: #538d4e;
+            --present: #b59f3b;
+            --absent: #3a3a3c;
+            --default: #121213;
+            --text: #ffffff;
+            --border: #3a3a3c;
+            --key-bg: #818384;
+        }
+
+        body {
+            background-color: var(--default);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        /* --- القائمة الرئيسية --- */
+        #menu {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--default);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            z-index: 50;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            width: 80%;
+            max-width: 300px;
+            font-family: inherit;
+        }
+        .btn-easy { background-color: #538d4e; }
+        .btn-medium { background-color: #b59f3b; }
+        .btn-hard { background-color: #c93838; }
+
+        /* --- حاوية اللعبة --- */
+        #game-container {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            border-bottom: 1px solid var(--border);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* منطقة الشبكة (البورد) */
+        .boards-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            overflow-y: auto;
+            gap: 15px;
+        }
+
+        .board {
+            display: grid;
+            gap: 5px;
+        }
+
+        .tile {
+            width: 52px;
+            height: 52px;
+            border: 2px solid var(--border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            user-select: none;
+        }
+
+        /* تأثير المربع النشط (حيث سيكتب المستخدم) */
+        .tile.active {
+            border-color: #888;
+            box-shadow: 0 0 5px #888;
+        }
+
+        .tile.filled {
+            border-color: #565758;
+            animation: pop 0.1s;
+        }
+
+        /* الألوان */
+        .correct { background-color: var(--correct); border-color: var(--correct); color: white; }
+        .present { background-color: var(--present); border-color: var(--present); color: white; }
+        .absent { background-color: var(--absent); border-color: var(--absent); color: white; }
+
+        @keyframes pop { 50% { transform: scale(1.1); } }
+        @keyframes flip-in {
+            0% { transform: rotateX(0); }
+            50% { transform: rotateX(-90deg); }
+            100% { transform: rotateX(0); }
+        }
+
+        /* --- الكيبورد (ستايل الآيفون) --- */
+        #keyboard {
+            width: 100%;
+            padding: 5px;
+            padding-bottom: 20px; 
+            background-color: var(--default);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .key-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            gap: 5px;
+        }
+
+        .key {
+            font-family: inherit;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: var(--key-bg);
+            color: white;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px; /* ارتفاع أزرار الآيفون */
+            font-size: 1.2rem;
+            user-select: none;
+            touch-action: manipulation;
+            transition: background-color 0.1s;
+        }
+        
+        .key:active { background-color: #aeb1b3; }
+        .key-wide { flex: 1.5; font-size: 0.9rem; }
+        
+        /* تحسينات للجوال */
+        @media (max-width: 400px) {
+            .tile { width: 40px; height: 40px; font-size: 1.5rem; }
+            .key { height: 45px; font-size: 1rem; }
+            .boards-container { gap: 5px; }
+        }
+
+        /* رسائل التنبيه */
+        #message-area {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+            pointer-events: none;
+        }
+        .toast {
+            background: white; color: black; padding: 10px 20px;
+            border-radius: 5px; font-weight: bold; opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="menu">
+        <h1 style="font-size: 2.5rem; color: #538d4e; margin-bottom: 30px;">وردل القرآني</h1>
+        <button class="btn btn-easy" onclick="startGame('easy')">سهل (5 أحرف)</button>
+        <button class="btn btn-medium" onclick="startGame('medium')">متوسط (6 أحرف)</button>
+        <button class="btn btn-hard" onclick="startGame('hard')">صعب (تحدي مزدوج)</button>
+    </div>
+
+    <div id="game-container">
+        <header>خمن الكلمة</header>
+        
+        <div class="boards-container" id="boards-container">
+            </div>
+
+        <div id="keyboard">
+            </div>
+    </div>
+
+    <div id="message-area"></div>
+
+    <script>
+        // ==========================================
+        // منطقة لصق الكلمات (مهم جداً)
+        // ==========================================
+        
+        // 1. الصق قائمة الـ 5 أحرف هنا بين علامتي ( ` )
+        const rawText_5 = `
+ظهورهم
+اتبعوا
+سليمان
+يعلمان
+يفرقون
+الحمد
+العصر
+الفلق
+الناس
+`;
+
+        // 2. الصق قائمة الـ 6 أحرف هنا بين علامتي ( ` )
+        const rawText_6 = `
+مستقيم
+العالم
+الرحيم
+المغرب
+الضحى
+انشراح
+والتين
+العلق
+القدر
+البينة
+`;
+
+        // تحويل النص المنسوخ إلى قائمة برمجية أوتوماتيكياً
+        function parseWordList(rawText) {
+            return rawText.trim().split(/\n+/).map(w => w.trim()).filter(w => w.length > 0);
+        }
+
+        const words_5 = parseWordList(rawText_5);
+        const words_6 = parseWordList(rawText_6);
+
+        // ==========================================
+        // إعدادات الكيبورد (ترتيب الآيفون)
+        // ==========================================
+        // الصف الأول والثاني والثالث كما في الآيفون العربي
+        const keysLayout = [
+            "د ج ح خ ه ع غ ف ق ث ص ض",
+            "ط ك م ن ت ا ل ب ي س ش",
+            "ظ ز و ة ى ر ؤ ء ذ"
+        ];
+
+        // ==========================================
+        // منطق اللعبة
+        // ==========================================
+        let state = {
+            mode: 'easy',
+            wordLength: 5,
+            maxGuesses: 6,
+            currentGuess: '',
+            guesses: [],
+            targets: [],
+            boardsSolved: [false, false],
+            isAnimating: false,
+            gameOver: false
+        };
+
+        function startGame(mode) {
+            state.mode = mode;
+            state.guesses = [];
+            state.currentGuess = '';
+            state.boardsSolved = [false, false];
+            state.isAnimating = false;
+            state.gameOver = false;
+
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('game-container').style.display = 'flex';
+
+            if (mode === 'easy') {
+                state.wordLength = 5;
+                state.maxGuesses = 6;
+                state.targets = [getRandomWord(words_5)];
+            } else if (mode === 'medium') {
+                state.wordLength = 6;
+                state.maxGuesses = 6;
+                state.targets = [getRandomWord(words_6)];
+            } else if (mode === 'hard') {
+                state.wordLength = 6;
+                state.maxGuesses = 7;
+                // كلمتان مختلفتان
+                let w1 = getRandomWord(words_6);
+                let w2 = getRandomWord(words_6);
+                while (w1 === w2) w2 = getRandomWord(words_6);
+                state.targets = [w1, w2];
+            }
+
+            buildBoards();
+            buildKeyboard();
+            updateGrid(); // لتحديد المربع النشط
+        }
+
+        function getRandomWord(list) {
+            if(!list || list.length === 0) return "خطأ";
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
+        function buildBoards() {
+            const container = document.getElementById('boards-container');
+            container.innerHTML = '';
+            const numBoards = state.mode === 'hard' ? 2 : 1;
+
+            for (let b = 0; b < numBoards; b++) {
+                const boardDiv = document.createElement('div');
+                boardDiv.className = 'board';
+                // ضبط عرض الأعمدة
+                boardDiv.style.gridTemplateColumns = `repeat(${state.wordLength}, 1fr)`;
+                
+                for (let r = 0; r < state.maxGuesses; r++) {
+                    for (let c = 0; c < state.wordLength; c++) {
+                        const tile = document.createElement('div');
+                        tile.className = 'tile';
+                        tile.id = `b${b}-r${r}-c${c}`;
+                        boardDiv.appendChild(tile);
+                    }
+                }
+                container.appendChild(boardDiv);
+            }
+        }
+
+        function buildKeyboard() {
+            const kbd = document.getElementById('keyboard');
+            kbd.innerHTML = '';
+
+            keysLayout.forEach((rowStr, rowIndex) => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'key-row';
+
+                // أزرار الحروف
+                const chars = rowStr.split(' ');
+                
+                // في الصف الأخير نضيف زر Enter على اليمين (للعربية)
+                if (rowIndex === 2) {
+                    const enterKey = createKeyElement('تم', 'Enter');
+                    enterKey.classList.add('key-wide');
+                    // في الآيفون زر المسح يمين والادخال يسار؟
+                    // عادة Enter يسار و Backspace يمين في التخطيط العربي
+                    rowDiv.appendChild(enterKey); 
+                }
+
+                chars.forEach(char => {
+                    rowDiv.appendChild(createKeyElement(char, char));
+                });
+
+                if (rowIndex === 2) {
+                    const backKey = createKeyElement('⌫', 'Backspace');
+                    backKey.classList.add('key-wide');
+                    rowDiv.appendChild(backKey);
+                }
+
+                kbd.appendChild(rowDiv);
+            });
+        }
+
+        function createKeyElement(label, val) {
+            const btn = document.createElement('div');
+            btn.className = 'key';
+            btn.textContent = label;
+            btn.setAttribute('data-key', val);
+            // استخدام ontouchstart لسرعة الاستجابة على الجوال
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                handleInput(val);
+            });
+            return btn;
+        }
+
+        // الاستماع للكيبورد الحقيقي
+        document.addEventListener('keydown', (e) => {
+            if (state.gameOver) return;
+            
+            const key = e.key;
+            if (key === 'Enter') handleInput('Enter');
+            else if (key === 'Backspace') handleInput('Backspace');
+            else {
+                // التحقق من الحروف العربية
+                if (/^[\u0600-\u06FF]$/.test(key)) {
+                    handleInput(key);
+                } else if (/^[a-zA-Z]$/.test(key)) {
+                    showToast("يرجى الكتابة باللغة العربية");
+                }
+            }
+        });
+
+        function handleInput(val) {
+            if (state.isAnimating || state.gameOver) return;
+
+            if (val === 'Enter') {
+                submitGuess();
+            } else if (val === 'Backspace') {
+                state.currentGuess = state.currentGuess.slice(0, -1);
+                updateGrid();
+            } else {
+                if (state.currentGuess.length < state.wordLength) {
+                    state.currentGuess += val;
+                    updateGrid();
+                }
+            }
+        }
+
+        function updateGrid() {
+            const currentRow = state.guesses.length;
+            const numBoards = state.mode === 'hard' ? 2 : 1;
+            
+            // إزالة التنشيط السابق
+            document.querySelectorAll('.tile.active').forEach(t => t.classList.remove('active'));
+
+            for (let b = 0; b < numBoards; b++) {
+                if (state.boardsSolved[b]) continue; // تخطي اللوحات المحلولة
+
+                for (let c = 0; c < state.wordLength; c++) {
+                    const tile = document.getElementById(`b${b}-r${currentRow}-c${c}`);
+                    const letter = state.currentGuess[c];
+                    
+                    tile.textContent = letter || '';
+                    
+                    if (letter) {
+                        tile.classList.add('filled');
+                        tile.style.borderColor = "#565758";
+                    } else {
+                        tile.classList.remove('filled');
+                        tile.style.borderColor = "var(--border)";
+                    }
+
+                    // تظليل المربع التالي للكتابة
+                    if (c === state.currentGuess.length && !state.boardsSolved[b]) {
+                        tile.classList.add('active');
+                    }
+                }
+            }
+        }
+
+        function submitGuess() {
+            if (state.currentGuess.length !== state.wordLength) {
+                showToast("الكلمة ناقصة");
+                return;
+            }
+
+            // التحقق من وجود الكلمة في القائمة
+            const dict = state.wordLength === 5 ? words_5 : words_6;
+            if (!dict.includes(state.currentGuess)) {
+                showToast("الكلمة غير موجودة في القائمة");
+                return;
+            }
+
+            state.isAnimating = true;
+            const currentRow = state.guesses.length;
+            const numBoards = state.mode === 'hard' ? 2 : 1;
+            
+            // حساب الألوان
+            let keyColorsUpdate = {}; // لتحديث الكيبورد لاحقاً
+
+            for (let b = 0; b < numBoards; b++) {
+                if (state.boardsSolved[b]) continue;
+
+                const targetWord = state.targets[b];
+                const guessArr = state.currentGuess.split('');
+                const targetArr = targetWord.split('');
+                const colors = new Array(state.wordLength).fill('absent');
+
+                // 1. التطابق التام (أخضر)
+                guessArr.forEach((char, i) => {
+                    if (char === targetArr[i]) {
+                        colors[i] = 'correct';
+                        targetArr[i] = null; // استهلاك الحرف
+                        keyColorsUpdate[char] = 'correct';
+                    }
+                });
+
+                // 2. التطابق الجزئي (برتقالي)
+                guessArr.forEach((char, i) => {
+                    if (colors[i] !== 'correct' && targetArr.includes(char)) {
+                        colors[i] = 'present';
+                        targetArr[targetArr.indexOf(char)] = null; // استهلاك
+                        if (keyColorsUpdate[char] !== 'correct') keyColorsUpdate[char] = 'present';
+                    } else if (colors[i] === 'absent') {
+                        if (!keyColorsUpdate[char]) keyColorsUpdate[char] = 'absent';
+                    }
+                });
+
+                // تطبيق الأنميشن
+                guessArr.forEach((char, i) => {
+                    const tile = document.getElementById(`b${b}-r${currentRow}-c${i}`);
+                    setTimeout(() => {
+                        tile.style.animation = 'flip-in 0.5s ease-in forwards';
+                        tile.style.borderColor = "transparent"; 
+                        // تغيير اللون في منتصف القلبة
+                        setTimeout(() => {
+                            tile.classList.add(colors[i]);
+                        }, 250);
+                    }, i * 250);
+                });
+
+                if (state.currentGuess === targetWord) {
+                    state.boardsSolved[b] = true;
+                }
+            }
+
+            // بعد انتهاء الانميشن
+            setTimeout(() => {
+                applyKeyboardColors(keyColorsUpdate);
+                state.guesses.push(state.currentGuess);
+                state.currentGuess = '';
+                state.isAnimating = false;
+                
+                checkGameStatus();
+                if (!state.gameOver) updateGrid();
+
+            }, state.wordLength * 250 + 500);
+        }
+
+        function applyKeyboardColors(updates) {
+            for (const [char, status] of Object.entries(updates)) {
+                const keyEl = document.querySelector(`.key[data-key="${char}"]`);
+                if (!keyEl) continue;
+
+                // الترتيب: الأخضر يغلب البرتقالي يغلب الرمادي
+                const currentClass = keyEl.classList.contains('correct') ? 'correct' :
+                                     keyEl.classList.contains('present') ? 'present' : 'absent';
+                
+                if (status === 'correct') {
+                    keyEl.classList.remove('present', 'absent');
+                    keyEl.classList.add('correct');
+                } else if (status === 'present' && currentClass !== 'correct') {
+                    keyEl.classList.remove('absent');
+                    keyEl.classList.add('present');
+                } else if (status === 'absent' && currentClass === 'absent') { // لم يتم تلوينه من قبل
+                     keyEl.classList.add('absent');
+                } else if (status === 'absent' && !keyEl.classList.contains('correct') && !keyEl.classList.contains('present')) {
+                    keyEl.classList.add('absent');
+                }
+            }
+        }
+
+        function checkGameStatus() {
+            const allSolved = state.mode === 'hard' ? state.boardsSolved[0] && state.boardsSolved[1] : state.boardsSolved[0];
+            
+            if (allSolved) {
+                state.gameOver = true;
+                showToast("🎉 مبروك! أحسنت", 5000);
+                setTimeout(() => location.reload(), 3000);
+            } else if (state.guesses.length >= state.maxGuesses) {
+                state.gameOver = true;
+                showToast(`حظ أوفر! الكلمة: ${state.targets.join(' و ')}`, 5000);
+                setTimeout(() => location.reload(), 4000);
+            }
+        }
+
+        function showToast(msg, duration=2000) {
+            const area = document.getElementById('message-area');
+            const div = document.createElement('div');
+            div.className = 'toast';
+            div.textContent = msg;
+            area.appendChild(div);
+            setTimeout(() => div.remove(), duration);
+        }
+
+    </script>
+</body>
+</html>
