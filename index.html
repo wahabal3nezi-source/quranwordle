@@ -5,208 +5,248 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>لعبة كلمات القرآن</title>
   <style>
-    :root {
-      --correct: #538d4e;
-      --present: #b59f3b;
-      --absent: #3a3a3c;
-      --default: #121213;
-      --text: #ffffff;
-      --border: #3a3a3c;
-      --key-bg: #818384;
+    :root{
+      --correct:#538d4e;
+      --present:#b59f3b;
+      --absent:#3a3a3c;
+      --default:#121213;
+      --text:#ffffff;
+      --border:#3a3a3c;
+      --key-bg:#818384;
+
+      /* Mobile-first sizing (iPhone) */
+      --tile: 38px;
+      --tile-font: 1.55rem;
+      --tile-gap: 4px;
+      --board-gap: 8px;
+      --divider: 6px;
+
+      --key-h: 44px;
+      --key-font: 1.05rem;
+      --kbd-gap: 6px;
+
+      --header-h: 54px;
     }
 
-    body {
-      background-color: var(--default);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0;
-      height: 100vh;
-      overflow: hidden;
-      touch-action: manipulation;
+    *{box-sizing:border-box}
+    body{
+      background-color:var(--default);
+      color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      margin:0;
+      height:100vh;
+      overflow:hidden;          /* no horizontal scroll */
+      touch-action:manipulation;
     }
 
-    /* --- القائمة الرئيسية --- */
-    #menu {
-      position: absolute; inset: 0;
-      background: var(--default);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      z-index: 50;
-      padding: 0 12px;
-      box-sizing: border-box;
-      text-align: center;
+    /* Menu */
+    #menu{
+      position:absolute; inset:0;
+      background:var(--default);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      z-index:50;
+      padding:0 14px;
+      text-align:center;
+    }
+    .btn{
+      padding:14px 30px;
+      font-size:1.1rem;
+      cursor:pointer;
+      border:none;
+      border-radius:12px;
+      color:white;
+      font-weight:800;
+      width:100%;
+      max-width:340px;
+      font-family:inherit;
+      background:#6b6b6d; /* gray */
     }
 
-    .btn {
-      padding: 15px 40px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      border: none;
-      border-radius: 10px;
-      color: white;
-      font-weight: bold;
-      width: 80%;
-      max-width: 300px;
-      font-family: inherit;
-      background: #6b6b6d; /* رمادي موحد */
+    /* Game container (mobile-first width) */
+    #game-container{
+      display:none;
+      flex-direction:column;
+      height:100%;
+      width:100%;
+      max-width:420px;          /* iPhone-friendly */
+      position:relative;
+      padding:0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
     }
 
-    /* --- حاوية اللعبة --- */
-    #game-container {
-      display: none;
-      flex-direction: column;
-      height: 100%;
-      width: 100%;
-      max-width: 640px;
-      position: relative;
+    header{
+      height:var(--header-h);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-bottom:1px solid var(--border);
+      font-weight:800;
+      font-size:1.05rem;
+      position:relative;
+      padding:0 12px;
     }
 
-    header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 56px;
-      border-bottom: 1px solid var(--border);
-      font-weight: bold;
-      font-size: 1.15rem;
-      position: relative;
+    /* Exit button */
+    #exit-btn{
+      position:absolute;
+      top:10px;
+      left:12px;
+      padding:10px 14px;
+      font-size:1rem;
+      font-weight:800;
+      border:none;
+      border-radius:12px;
+      background:#2b2b2d;
+      color:white;
+      cursor:pointer;
+      line-height:1;
+    }
+    #exit-btn:active{background:#3b3b3d}
+
+    /* Boards area */
+    .boards-container{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:10px 10px 0 10px;
+      overflow-y:auto;
+      overflow-x:hidden;
+      gap:var(--board-gap);
     }
 
-    /* زر الخروج */
-    #exit-btn {
-      position: absolute;
-      top: 10px;
-      left: 12px; /* يسار شوي */
-      padding: 10px 16px;
-      font-size: 1rem;
-      font-weight: 700;
-      border: none;
-      border-radius: 10px;
-      background: #2b2b2d;
-      color: white;
-      cursor: pointer;
-    }
-    #exit-btn:active { background:#3b3b3d; }
-
-    /* منطقة الشبكة */
-    .boards-container {
-      flex-grow: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px 10px 0 10px;
-      overflow-y: auto; overflow-x: hidden;
-      gap: 8px;
+    .board{
+      display:grid;
+      gap:var(--tile-gap);
+      justify-content:center;
     }
 
-    .board {
-      display: grid;
-      gap: 5px;
+    .tile{
+      width:var(--tile);
+      height:var(--tile);
+      border:2px solid var(--border);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:var(--tile-font);
+      font-weight:900;
+      user-select:none;
     }
 
-    .tile {
-      width: 44px;
-      height: 44px;
-      border: 2px solid var(--border);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.6rem;
-      font-weight: bold;
-      user-select: none;
+    .divider{
+      width:var(--divider);
+      height:var(--tile);
     }
 
-    .divider {
-      width: 6px;
-      height: 44px;
+    .tile.active{
+      border-color:#888;
+      box-shadow:0 0 5px #888;
+    }
+    .tile.filled{
+      border-color:#565758;
+      animation:pop 0.1s;
+    }
+    .correct{background-color:var(--correct); border-color:var(--correct); color:white;}
+    .present{background-color:var(--present); border-color:var(--present); color:white;}
+    .absent{background-color:var(--absent); border-color:var(--absent); color:white;}
+
+    @keyframes pop{50%{transform:scale(1.07)}}
+    @keyframes flip-in{
+      0%{transform:rotateX(0)}
+      50%{transform:rotateX(-90deg)}
+      100%{transform:rotateX(0)}
     }
 
-    .tile.active {
-      border-color: #888;
-      box-shadow: 0 0 5px #888;
+    /* Keyboard (mobile-first) */
+    #keyboard{
+      width:100%;
+      padding:8px 8px calc(18px + env(safe-area-inset-bottom)) 8px;
+      background-color:var(--default);
+      display:flex;
+      flex-direction:column;
+      gap:var(--kbd-gap);
+    }
+    .key-row{
+      display:flex;
+      justify-content:center;
+      width:100%;
+      gap:6px;
+    }
+    .key{
+      font-family:inherit;
+      font-weight:900;
+      border-radius:10px;
+      cursor:pointer;
+      background-color:var(--key-bg);
+      color:white;
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:var(--key-h);
+      font-size:var(--key-font);
+      user-select:none;
+      touch-action:manipulation;
+      transition:background-color 0.1s;
+    }
+    .key:active{background-color:#aeb1b3}
+    .key-wide{flex:1.55; font-size:0.95rem}
+
+    /* Toasts */
+    #message-area{
+      position:fixed;
+      top:10%;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      z-index:100;
+      pointer-events:none;
+    }
+    .toast{
+      background:white;
+      color:black;
+      padding:10px 18px;
+      border-radius:10px;
+      font-weight:900;
+      opacity:0.95;
+      max-width:90vw;
+      text-align:center;
     }
 
-    .tile.filled {
-      border-color: #565758;
-      animation: pop 0.1s;
+    /* Scale up for bigger screens (tablet/desktop) */
+    @media (min-width: 480px){
+      :root{
+        --tile: 44px;
+        --tile-font: 1.7rem;
+        --tile-gap: 5px;
+        --divider: 8px;
+
+        --key-h: 48px;
+        --key-font: 1.1rem;
+
+        --header-h: 58px;
+      }
+      #game-container{max-width:560px;}
     }
+    @media (min-width: 768px){
+      :root{
+        --tile: 52px;
+        --tile-font: 2rem;
+        --tile-gap: 6px;
+        --divider: 10px;
 
-    .correct { background-color: var(--correct); border-color: var(--correct); color: white; }
-    .present { background-color: var(--present); border-color: var(--present); color: white; }
-    .absent  { background-color: var(--absent);  border-color: var(--absent);  color: white; }
-
-    @keyframes pop { 50% { transform: scale(1.1); } }
-    @keyframes flip-in {
-      0% { transform: rotateX(0); }
-      50% { transform: rotateX(-90deg); }
-      100% { transform: rotateX(0); }
-    }
-
-    /* --- الكيبورد --- */
-    #keyboard {
-      width: 100%;
-      padding: 6px 6px 20px 6px;
-      background-color: var(--default);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .key-row {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      gap: 5px;
-    }
-
-    .key {
-      font-family: inherit;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-      background-color: var(--key-bg);
-      color: white;
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 50px;
-      font-size: 1.2rem;
-      user-select: none;
-      touch-action: manipulation;
-      transition: background-color 0.1s;
-    }
-
-    .key:active { background-color: #aeb1b3; }
-    .key-wide { flex: 1.5; font-size: 0.95rem; }
-
-    @media (max-width: 520px) {
-      .tile { width: 40px; height: 40px; font-size: 1.6rem; }
-      .divider { height: 40px; }
-      .key { height: 45px; font-size: 1.05rem; }
-    }
-
-    /* رسائل التنبيه */
-    #message-area {
-      position: fixed;
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 100;
-      pointer-events: none;
-    }
-    .toast {
-      background: white; color: black; padding: 10px 20px;
-      border-radius: 8px; font-weight: bold; opacity: 0.92;
+        --key-h: 54px;
+        --key-font: 1.2rem;
+      }
+      #game-container{max-width:720px;}
     }
   </style>
 </head>
