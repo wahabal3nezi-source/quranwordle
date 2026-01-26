@@ -616,7 +616,8 @@
         const pos = validIndices[Math.floor(Math.random() * validIndices.length)];
         state.usedHardPositions.add(pos);
 
-        const hintText = `الكلمة اليمنى: خانة ${pos+1} هي "${target2[pos]}" | الكلمة اليسرى: خانة ${pos+1} هي "${target1[pos]}"`;
+        const hintText = `الكلمة اليمنى: خانة ${pos+1} هي "${target1[pos]} | "الكلمة اليسرى: خانة ${pos+1} هي "${target2[pos]}"`;
+
         state.hardHints.push(hintText);
         document.getElementById("hard-hint-area").innerHTML = state.hardHints.join("<br>");
       } else {
