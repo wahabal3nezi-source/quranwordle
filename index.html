@@ -3,75 +3,144 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#7c031b">
-  <meta name="description" content="احجزي استشارتك أو دورتك مع د. منى بن علي مباشرة وبخطوات بسيطة.">
+  <meta name="theme-color" content="#790018">
+  <meta name="description" content="احجزي استشارتك مع د. منى بن علي مباشرة. جلسات أونلاين، مواعيد واضحة، وتأكيد سريع عبر واتساب.">
   <title>د. منى بن علي | احجزي موعدك</title>
   <link rel="icon" type="image/png" href="/assets/logo.png">
   <link rel="canonical" href="https://quranwordle.com/">
   <meta property="og:title" content="د. منى بن علي | احجزي موعدك">
-  <meta property="og:description" content="اختاري الخدمة والموعد المناسب وأرسلي طلب الحجز مباشرة.">
+  <meta property="og:description" content="اختاري الخدمة والموعد، وأرسلي طلب الحجز مباشرة عبر واتساب.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://quranwordle.com/">
-  <meta property="og:image" content="https://quranwordle.com/assets/logo.png">
+  <meta property="og:image" content="https://quranwordle.com/assets/mona-portrait.jpg">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="#top"><img src="/assets/logo.png" alt=""><span><b>د. منى بن علي</b><small>Consultancy Center</small></span></a>
-  <a class="wa-mini" href="https://wa.me/96599577468" target="_blank" rel="noopener">واتساب</a>
-</header>
-<main id="top">
-  <section class="booking-hero">
-    <div class="intro">
-      <span class="eyebrow">احجزي مباشرة</span>
-      <h1>اختاري خدمتك<br><em>واحجزي الآن.</em></h1>
-      <p>بدون خطوات طويلة. اختاري نوع الموعد، حددي الوقت المناسب، وأرسلي الطلب مباشرة.</p>
-    </div>    <div class="service-list" aria-label="الخدمات">
-      <article class="book-card primary-card">
-        <div class="card-image"><img src="/assets/mona-portrait.jpg" alt="استشارة أونلاين"></div>
-        <div class="card-body"><span>الأكثر طلباً</span><h2>استشارة أونلاين</h2><p>45 دقيقة عبر Zoom مع د. منى.</p>
-          <div class="card-foot"><strong>45 دقيقة</strong><button data-service="1">احجزي الآن</button></div>
-        </div>
-      </article>
-      <article class="book-card urgent-card">
-        <div class="card-image"><img src="/assets/urgent-consult.jpg" alt="استشارة مستعجلة"></div>
-        <div class="card-body"><span>موعد أسرع</span><h2>استشارة مستعجلة</h2><p>ساعة عبر Zoom مع أولوية في التنسيق.</p>
-          <div class="card-foot"><strong>80 د.ك</strong><button data-service="3">احجزي الآن</button></div>
-        </div>
-      </article>
-      <article class="book-card course-card">
-        <div class="card-image"><img src="/assets/course-charisma.jpg" alt="كاريزما الحضور"></div>
-        <div class="card-body"><span>برنامج تدريبي</span><h2>كاريزما الحضور</h2><p>برنامج مباشر عبر Zoom لتطوير الحضور والثقة.</p>
-          <div class="card-foot"><strong>20 د.ك</strong><button data-service="2">احجزي الآن</button></div>
-        </div>
-      </article>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#top" aria-label="د. منى بن علي">
+        <img src="/assets/logo.png" alt="">
+        <span><b>د. منى بن علي</b><small>Consultancy Center</small></span>
+      </a>
+      <a class="top-wa" href="https://wa.me/96599577468">واتساب</a>
     </div>
-  </section>
-  <section class="quick-help">
-    <div><b>مو متأكدة أي خدمة تناسبك؟</b><span>أرسلي استفسارك مباشرة على واتساب.</span></div>
-    <a href="https://wa.me/96599577468?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D8%8C%20%D8%A3%D8%A8%D9%8A%20%D8%A3%D8%B3%D8%AA%D9%81%D8%B3%D8%B1%20%D8%B9%D9%86%20%D8%A7%D9%84%D8%AE%D8%AF%D9%85%D8%A7%D8%AA" target="_blank" rel="noopener">اسألي على واتساب</a>
-  </section>
-  <section class="confidence-strip">
-    <div><strong>1:1</strong><span>جلسات فردية</span></div><div><strong>Zoom</strong><span>من أي مكان</span></div><div><strong>خصوصية</strong><span>تجربة مريحة وآمنة</span></div>
-  </section>
-</main><dialog class="booking-modal" id="bookingModal">
-  <button class="modal-close" id="modalClose" aria-label="إغلاق">×</button>
-  <div class="modal-head"><span>طلب حجز</span><h2>كملي بياناتك</h2><p>نحتاج أقل من دقيقة، وبعدها يفتح واتساب بالطلب جاهز.</p></div>
-  <form id="bookingForm">
-    <label><span>الخدمة</span><select name="service_id" id="serviceSelect" required>
-      <option value="1">استشارة أونلاين — 45 دقيقة</option>
-      <option value="3">استشارة مستعجلة — 80 د.ك</option>
-      <option value="2">كاريزما الحضور — 20 د.ك</option>
-    </select></label>
-    <div class="two"><label><span>الاسم</span><input name="name" required placeholder="اسمك"></label><label><span>رقم الهاتف</span><input name="phone" required placeholder="+965"></label></div>
-    <div class="two"><label><span>التاريخ المفضل</span><input name="preferred_date" type="date"></label><label><span>الوقت المفضل</span><input name="preferred_time" type="time"></label></div>
-    <label><span>ملاحظة اختيارية</span><textarea name="notes" rows="3" placeholder="أي تفاصيل مهمة"></textarea></label>
-    <button class="submit-book" type="submit">إرسال طلب الحجز عبر واتساب</button>
-    <p class="form-status" id="bookingStatus"></p>
-  </form>
-</dialog>
-<div class="sticky-book"><button data-service="1">احجزي الآن</button></div>
-<footer><span>© 2026 Dr. Mona Bin Ali</span><a href="https://wa.me/96599577468" target="_blank" rel="noopener">WhatsApp</a></footer>
-<script src="/app.js" defer></script>
+  </header>
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <p class="eyebrow">حجز مباشر · بدون خطوات طويلة</p>
+        <h1>موعدك مع<br><span>د. منى بن علي</span><br>بوضوح من البداية.</h1>
+        <p class="hero-lead">اختاري نوع الجلسة، حددي الوقت المناسب، وأرسلي طلبك. التأكيد والمتابعة تتم مباشرة عبر واتساب.</p>
+        <div class="hero-actions">
+          <button class="primary" type="button" data-service="1">احجزي استشارة</button>
+          <a class="text-link" href="https://wa.me/96599577468">أو تواصلي على واتساب</a>
+        </div>
+        <div class="hero-meta" aria-label="معلومات سريعة">
+          <span><b>1:1</b> جلسات فردية</span>
+          <span><b>Zoom</b> من أي مكان</span>
+          <span><b>45–60</b> دقيقة</span>
+        </div>
+      </div>
+      <figure class="portrait">
+        <div class="portrait-frame">
+          <img src="/assets/mona-portrait.jpg" alt="د. منى بن علي">
+        </div>
+        <figcaption><strong>د. منى بن علي</strong><span>استشارات وتدريب · جلسات أونلاين</span></figcaption>
+      </figure>
+    </section>
+
+    <section class="booking-section shell" id="services">
+      <div class="section-heading">
+        <p class="eyebrow">اختاري ما يناسبك</p>
+        <h2>ثلاث خدمات. قرار واضح.</h2>
+        <p>كل التفاصيل الأساسية أمامك قبل الحجز — المدة، السعر وطريقة الجلسة.</p>
+      </div>
+      <div class="service-list">
+        <article class="service-row">
+          <div class="service-no">01</div>
+          <div class="service-main">
+            <span class="service-kicker">الأكثر طلبًا</span>
+            <h3>استشارة أونلاين</h3>
+            <p>جلسة فردية مباشرة عبر Zoom لمناقشة الموضوع بخصوصية وتركيز.</p>
+          </div>
+          <div class="service-facts"><span>45 دقيقة</span><span>Zoom</span><span>السعر حسب الموعد</span></div>
+          <button class="service-action" type="button" data-service="1">اختيار الموعد</button>
+        </article>
+
+        <article class="service-row urgent">
+          <div class="service-no">02</div>
+          <div class="service-main">
+            <span class="service-kicker">أولوية أسرع</span>
+            <h3>استشارة مستعجلة</h3>
+            <p>جلسة أولوية عند الحاجة لموعد أسرع، مع تنسيق مباشر عبر واتساب.</p>
+          </div>
+          <div class="service-facts"><span>60 دقيقة</span><span>Zoom</span><span>80 د.ك</span></div>
+          <button class="service-action light" type="button" data-service="3">احجزي الآن</button>
+        </article>
+
+        <article class="service-row course">
+          <div class="service-no">03</div>
+          <div class="service-main">
+            <span class="service-kicker">برنامج تدريبي</span>
+            <h3>كاريزما الحضور</h3>
+            <p>برنامج مباشر لتطوير الحضور، الثقة والتواصل المؤثر في المواقف المهنية.</p>
+          </div>
+          <div class="service-facts"><span>أونلاين</span><span>Zoom</span><span>20 د.ك</span></div>
+          <button class="service-action" type="button" data-service="2">احجزي الدورة</button>
+        </article>
+      </div>
+    </section>
+    <section class="process shell">
+      <div class="process-intro">
+        <p class="eyebrow">من الاختيار إلى التأكيد</p>
+        <h2>الحجز لا يحتاج أكثر من دقيقة.</h2>
+      </div>
+      <div class="steps">
+        <div><span>1</span><b>اختاري الخدمة</b><p>حددي نوع الجلسة المناسبة لك.</p></div>
+        <div><span>2</span><b>اكتبي بياناتك</b><p>الاسم، الرقم والوقت المفضل فقط.</p></div>
+        <div><span>3</span><b>أرسلي الطلب</b><p>يفتح واتساب والطلب مرتب وجاهز للإرسال.</p></div>
+      </div>
+    </section>
+
+    <section class="direct-cta">
+      <div class="shell direct-inner">
+        <div><p class="eyebrow pale">إذا كنتِ تعرفين ما تحتاجينه</p><h2>ابدئي بالحجز الآن.</h2></div>
+        <button class="primary inverse" type="button" data-service="1">اختيار الموعد</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer shell">
+    <div class="footer-brand"><img src="/assets/logo.png" alt=""><div><b>د. منى بن علي</b><span>Consultancy Center</span></div></div>
+    <div class="footer-links"><a href="https://wa.me/96599577468">واتساب</a><a href="#services">الخدمات</a></div>
+    <small>الحجز والتأكيد النهائي يتمان عبر واتساب.</small>
+  </footer>
+  <dialog class="booking-modal" id="bookingModal">
+    <form class="booking-form" id="bookingForm">
+      <button class="modal-close" id="modalClose" type="button" aria-label="إغلاق">×</button>
+      <div class="modal-head">
+        <p class="eyebrow">طلب حجز</p>
+        <h2>كمّلي بياناتك</h2>
+        <p>نحتاج المعلومات الأساسية فقط. بعدها يفتح واتساب بالطلب جاهز.</p>
+      </div>
+      <label>الخدمة
+        <select name="service_id" id="serviceSelect" required>
+          <option value="1">استشارة أونلاين — 45 دقيقة</option>
+          <option value="3">استشارة مستعجلة — 80 د.ك</option>
+          <option value="2">كاريزما الحضور — 20 د.ك</option>
+        </select>
+      </label>
+      <div class="form-grid">
+        <label>الاسم<input name="name" autocomplete="name" placeholder="اسمك" required></label>
+        <label>رقم الهاتف<input name="phone" inputmode="tel" autocomplete="tel" placeholder="+965" required></label>
+        <label>التاريخ المفضل<input name="preferred_date" type="date"></label>
+        <label>الوقت المفضل<input name="preferred_time" type="time"></label>
+      </div>
+      <label>ملاحظة اختيارية<textarea name="notes" rows="3" placeholder="أي تفاصيل مهمة"></textarea></label>
+      <button class="submit-booking" type="submit">إرسال الطلب عبر واتساب</button>
+      <p class="form-status" id="bookingStatus"></p>
+    </form>
+  </dialog>
+  <script src="/app.js"></script>
 </body>
 </html>

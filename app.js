@@ -21,8 +21,7 @@ $('#modalClose').addEventListener('click',closeBooking);
 modal.addEventListener('click',e=>{if(e.target===modal)closeBooking()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeBooking()});$('#bookingForm').addEventListener('submit',e=>{
   e.preventDefault();
-  const form=e.currentTarget;
-  const data=Object.fromEntries(new FormData(form).entries());
+  const data=Object.fromEntries(new FormData(e.currentTarget).entries());
   const label=services[data.service_id]||'خدمة';
   const msg=[
     'طلب حجز جديد',
