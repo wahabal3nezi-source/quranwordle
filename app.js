@@ -69,12 +69,21 @@ $$('.service-option').forEach(btn=>btn.addEventListener('click',()=>{
 $$('[data-back]').forEach(btn=>btn.addEventListener('click',()=>showStage(Number(btn.dataset.back))));
 $$('[data-jump]').forEach(btn=>btn.addEventListener('click',()=>{const n=Number(btn.dataset.jump);if(n<=state.maxStage)showStage(n)}));
 $('#phoneInput').addEventListener('input',e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,8));
+const termsModal=$('#termsModal'),termsCheck=$('#termsCheck'),confirmBtn=$('.confirm');
+function setTerms(open){termsModal.hidden=!open;document.body.style.overflow=open?'hidden':''}
+$('#termsOpen').addEventListener('click',()=>setTerms(true));
+$('#termsClose').addEventListener('click',()=>setTerms(false));
+termsModal.addEventListener('click',e=>{if(e.target===termsModal)setTerms(false)});
+$('#termsAgree').addEventListener('click',()=>{termsCheck.checked=true;confirmBtn.disabled=false;setTerms(false)});
+termsCheck.addEventListener('change',()=>confirmBtn.disabled=!termsCheck.checked);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!termsModal.hidden)setTerms(false)});
 $('#bookingForm').addEventListener('submit',e=>{
   e.preventDefault();
   const name=$('#nameInput').value.trim();
   const phone=$('#phoneInput').value.replace(/\D/g,'');
   if(!name){$('#nameInput').focus();return}
   if(phone.length!==8){$('#phoneInput').focus();return}
+  if(!termsCheck.checked){$('#termsOpen').focus();return}
   const s=SERVICES[state.service];
   const msg=[
     'طلب حجز جديد',

@@ -42,15 +42,15 @@
         <div class="service-grid">
           <button class="service-option" data-service="consultation" type="button">
             <span class="service-icon">01</span>
-            <span><b>استشارة أونلاين</b><small>45 دقيقة عبر Zoom</small></span>
+            <span class="service-copy"><b>استشارة أونلاين</b><small>جلسة خاصة لمدة 45 دقيقة عبر Zoom</small><em>يتم تأكيد الموعد عبر واتساب</em></span>
           </button>
           <button class="service-option" data-service="urgent" type="button">
             <span class="service-icon">02</span>
-            <span><b>استشارة مستعجلة</b><small>موعد بأولوية</small></span>
+            <span class="service-copy"><b>استشارة مستعجلة</b><small>جلسة لمدة ساعة عبر Zoom</small><em>يتم تحديد الموعد خلال 1–4 أيام من الحجز</em></span>
           </button>
           <button class="service-option" data-service="course" type="button">
             <span class="service-icon">03</span>
-            <span><b>كاريزما الحضور</b><small>السبت 26 سبتمبر · 7 مساءً</small></span>
+            <span class="service-copy"><b>كاريزما الحضور</b><small>دورة مباشرة عبر Zoom · 20 د.ك</small><em>السبت 26 سبتمبر · 7–9 مساءً · +21</em></span>
           </button>
         </div>
       </div>
@@ -72,20 +72,20 @@
 
       <div class="stage" data-stage="4">
         <div class="stage-bar final-title">
-          <div><b>تأكيد الحجز</b><small>باقي الاسم ورقم الجوال فقط</small></div>
+          <div><b>تأكيد الحجز</b><small>راجعي البيانات واقرئي الشروط قبل الإرسال</small></div>
           <button class="back" type="button" data-back="3">رجوع</button>
         </div>
         <div class="summary" id="summaryBox"></div>
         <form id="bookingForm" class="booking-form">
           <label><span>الاسم</span><input id="nameInput" autocomplete="name" placeholder="اكتبي اسمك" required></label>
           <label><span>رقم الجوال</span><div class="phone"><span>+965</span><input id="phoneInput" inputmode="numeric" autocomplete="tel" placeholder="XXXXXXXX" maxlength="8" required></div></label>
-          <button class="confirm" type="submit">تأكيد طلب الحجز</button>
+          <div class="terms-box"><label class="terms-check"><input id="termsCheck" type="checkbox" required><span>قرأت وأوافق على الشروط والأحكام</span></label><button id="termsOpen" class="terms-link" type="button">قراءة الشروط والأحكام</button></div><button class="confirm" type="submit" disabled>تأكيد طلب الحجز</button>
         </form>
         <p class="fine">يفتح واتساب برسالة جاهزة لتأكيد الموعد.</p>
       </div>
     </section>
   </main>
   <a class="whatsapp-help" href="https://wa.me/96599577468">مساعدة واتساب</a>
-  <script src="/app.js"></script>
+  <div class="terms-modal" id="termsModal" hidden><div class="terms-sheet" role="dialog" aria-modal="true" aria-labelledby="termsTitle"><div class="terms-head"><h2 id="termsTitle">الشروط والأحكام</h2><button id="termsClose" type="button">إغلاق</button></div><div class="terms-content"><p>يرجى قراءة الشروط التالية قبل تأكيد الحجز:</p><ul><li>يمكن تأجيل الموعد لمرة واحدة بشرط أن يكون ذلك قبل الموعد بـ 24 ساعة على الأقل.</li><li>لا يمكن تأجيل الموعد في نفس اليوم.</li><li>عند إلغاء الاستشارة قبل الموعد بـ 24 ساعة أو أكثر يتم استرجاع المبلغ كاملاً.</li><li>عند الإلغاء قبل الموعد بأقل من 24 ساعة يتم استرجاع نصف المبلغ.</li><li>الموعد الذي تم تأجيله أو تعديل وقته لا يمكن إلغاؤه.</li><li>في حال عدم الحضور، أو عدم الدخول إلى اجتماع Zoom حتى منتصف وقت الجلسة، يعتبر الموعد لاغياً ولا يسترجع مبلغ الاستشارة.</li><li>الدورات: يمكن إلغاء التسجيل واسترجاع المبلغ كاملاً قبل 24 ساعة من موعد الدورة، ولا يمكن الإلغاء في نفس يوم الدورة.</li></ul></div><button id="termsAgree" class="terms-agree" type="button">قرأت الشروط وأوافق</button></div></div><script src="/app.js"></script>
 </body>
 </html>
