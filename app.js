@@ -1,37 +1,63 @@
-const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const modal=$('#bookingModal');
-const select=$('#serviceSelect');
 const WHATSAPP='96599577468';
-const services={
-  1:'استشارة أونلاين — 45 دقيقة',
-  2:'كاريزما الحضور — 20 د.ك',
-  3:'استشارة مستعجلة — 80 د.ك'
-};
-function openBooking(id){
-  if(id&&select)select.value=String(id);
-  if(typeof modal.showModal==='function')modal.showModal();else modal.setAttribute('open','');
-  document.body.style.overflow='hidden';
+const dateList=document.querySelector('#dateList');
+const selectedDate=document.querySelector('#selectedDate');
+const form=document.querySelector('#bookingForm');
+const error=document.querySelector('#formError');
+
+const dayNames=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const monthNames=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+function pad(n){return String(n).padStart(2,'0')}
+function isoDate(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
+function arabicDateLabel(d){return `${dayNames[d.getDay()]} ${d.getDate()} ${monthNames[d.getMonth()]}`}
+
+function buildDates(){
+  const today=new Date();
+  today.setHours(12,0,0,0);
+  const dates=[];
+  for(let i=1;i<=5;i++){
+    const d=new Date(today);
+    d.setDate(today.getDate()+i);
+    dates.push(d);
+  }
+  dateList.innerHTML=dates.map((d,i)=>`<button class="date-btn" type="button" role="radio" aria-checked="${i===0?'true':'false'}" data-date="${isoDate(d)}" data-label="${arabicDateLabel(d)}"><span>${dayNames[d.getDay()]}</span><strong>${d.getDate()}</strong><small>${monthNames[d.getMonth()]}</small></button>`).join('');
+  selectedDate.value=isoDate(dates[0]);
+  dateList.querySelectorAll('.date-btn').forEach(btn=>btn.addEventListener('click',()=>selectDate(btn)));
 }
-function closeBooking(){
-  if(modal.open)modal.close();else modal.removeAttribute('open');
-  document.body.style.overflow='';
+function selectDate(btn){
+  dateList.querySelectorAll('.date-btn').forEach(x=>x.setAttribute('aria-checked','false'));
+  btn.setAttribute('aria-checked','true');
+  selectedDate.value=btn.dataset.date;
 }
-$$('[data-service]').forEach(btn=>btn.addEventListener('click',()=>openBooking(Number(btn.dataset.service))));
-$('#modalClose').addEventListener('click',closeBooking);
-modal.addEventListener('click',e=>{if(e.target===modal)closeBooking()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeBooking()});$('#bookingForm').addEventListener('submit',e=>{
+
+function cleanPhone(value){return value.replace(/[^0-9+]/g,'').trim()}
+
+form.addEventListener('submit',e=>{
   e.preventDefault();
-  const data=Object.fromEntries(new FormData(e.currentTarget).entries());
-  const label=services[data.service_id]||'خدمة';
+  error.textContent='';
+  const name=document.querySelector('#name').value.trim();
+  const phone=cleanPhone(document.querySelector('#phone').value);
+  const service=document.querySelector('input[name="service"]:checked')?.value;
+  const period=document.querySelector('input[name="period"]:checked')?.value;
+  const dateBtn=dateList.querySelector('.date-btn[aria-checked="true"]');
+
+  if(name.length<2){error.textContent='اكتبي الاسم من فضلك.';document.querySelector('#name').focus();return}
+  if(phone.replace(/\D/g,'').length<8){error.textContent='تأكدي من رقم الجوال.';document.querySelector('#phone').focus();return}
+  if(!service||!period||!dateBtn){error.textContent='اختاري الخدمة واليوم والفترة.';return}
+
   const msg=[
-    'طلب حجز جديد',
-    `الخدمة: ${label}`,
-    `الاسم: ${data.name||''}`,
-    `الهاتف: ${data.phone||''}`,
-    data.preferred_date?`التاريخ المفضل: ${data.preferred_date}`:'',
-    data.preferred_time?`الوقت المفضل: ${data.preferred_time}`:'',
-    data.notes?`ملاحظة: ${data.notes}`:''
-  ].filter(Boolean).join('\n');
-  $('#bookingStatus').textContent='جاري فتح واتساب...';
+    'السلام عليكم، أود حجز موعد مع د. منى بن علي.',
+    '',
+    `الاسم: ${name}`,
+    `رقم الجوال: ${phone}`,
+    `الخدمة: ${service}`,
+    `اليوم المفضل: ${dateBtn.dataset.label}`,
+    `الفترة المفضلة: ${period}`,
+    '',
+    'بانتظار تأكيد الموعد، شكراً.'
+  ].join('\n');
+
   window.location.href=`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
 });
+
+buildDates();
