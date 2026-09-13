@@ -5,89 +5,87 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#7f071f">
   <title>حجز موعد | د. منى بن علي</title>
-  <meta name="description" content="احجزي موعدك مع د. منى بن علي بخطوات بسيطة وسريعة.">
-  <link rel="icon" type="image/png" href="/assets/logo.png">
+  <meta name="description" content="احجزي موعدك مع د. منى بن علي بخطوات واضحة وسريعة.">
+  <link rel="icon" type="image/png" href="/assets/logo-original.png">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="/" aria-label="الرئيسية">
-      <img src="/assets/logo.png" alt="د. منى بن علي">
-      <span>د. منى بن علي</span>
-    </a>
-    <a class="help" href="https://wa.me/96599577468">مساعدة عبر واتساب</a>
+  <header class="site-head">
+    <div class="profile">
+      <img class="portrait" src="/assets/mona-original-4k.jpg" alt="د. منى بن علي">
+      <div class="profile-copy">
+        <strong>د. منى بن علي</strong>
+        <span>Consultancy Center</span>
+      </div>
+    </div>
+    <img class="brand-logo" src="/assets/logo-original.png" alt="شعار د. منى بن علي">
   </header>
 
-  <main class="booking-page">
-    <section class="booking-shell" aria-labelledby="bookingTitle">
-      <div class="booking-head">
-        <p class="eyebrow">حجز موعد</p>
-        <h1 id="bookingTitle">اختاري موعدك بسهولة</h1>
-        <p id="stepHint">ابدئي باختيار نوع الموعد.</p>
+  <main class="page">
+    <section class="booking-card" aria-labelledby="bookingTitle">
+      <div class="card-head">
+        <small>حجز موعد</small>
+        <h1 id="bookingTitle">اختاري واحجزي</h1>
+        <p id="stepHint">اختاري نوع الموعد أولاً</p>
       </div>
+      <nav class="steps" aria-label="خطوات الحجز">
+        <button type="button" class="step-dot active" data-jump="1"><span>1</span><b>النوع</b></button>
+        <i></i>
+        <button type="button" class="step-dot" data-jump="2" disabled><span>2</span><b>اليوم</b></button>
+        <i></i>
+        <button type="button" class="step-dot" data-jump="3" disabled><span>3</span><b>الوقت</b></button>
+        <i></i>
+        <button type="button" class="step-dot" data-jump="4" disabled><span>4</span><b>التأكيد</b></button>
+      </nav>
 
-      <div class="progress" aria-label="مراحل الحجز">
-        <span class="progress-item active" data-progress="1">النوع</span>
-        <span class="progress-item" data-progress="2">اليوم</span>
-        <span class="progress-item" data-progress="3">الوقت</span>
-        <span class="progress-item" data-progress="4">التأكيد</span>
-      </div>
       <div class="stage active" data-stage="1">
-        <div class="choice-list service-list">
-          <button class="choice service-choice" data-service="consultation" type="button">
+        <div class="service-grid">
+          <button class="service-option" data-service="consultation" type="button">
+            <span class="service-icon">01</span>
             <span><b>استشارة أونلاين</b><small>45 دقيقة عبر Zoom</small></span>
-            <strong>45 د</strong>
           </button>
-          <button class="choice service-choice" data-service="urgent" type="button">
-            <span><b>استشارة مستعجلة</b><small>أولوية في تنسيق الموعد</small></span>
-            <strong>80 د.ك</strong>
+          <button class="service-option" data-service="urgent" type="button">
+            <span class="service-icon">02</span>
+            <span><b>استشارة مستعجلة</b><small>موعد بأولوية</small></span>
           </button>
-          <button class="choice service-choice" data-service="course" type="button">
-            <span><b>كاريزما الحضور</b><small>برنامج تدريبي عبر Zoom</small></span>
-            <strong>20 د.ك</strong>
+          <button class="service-option" data-service="course" type="button">
+            <span class="service-icon">03</span>
+            <span><b>كاريزما الحضور</b><small>السبت 26 سبتمبر · 7 مساءً</small></span>
           </button>
         </div>
       </div>
-
       <div class="stage" data-stage="2">
-        <div class="stage-title-row">
-          <div><b>اختاري اليوم</b><small>اسحبي لرؤية الأيام التالية</small></div>
-          <button class="back-btn" type="button" data-back="1">رجوع</button>
+        <div class="stage-bar">
+          <div><b>اختاري اليوم</b><small id="dayNote">المتاح حالياً</small></div>
+          <button class="back" type="button" data-back="1">رجوع</button>
         </div>
-        <div class="date-strip" id="dateStrip"></div>
+        <div class="date-row" id="dateRow"></div>
       </div>
 
       <div class="stage" data-stage="3">
-        <div class="stage-title-row">
-          <div><b>اختاري الوقت</b><small id="chosenDateText"></small></div>
-          <button class="back-btn" type="button" data-back="2">رجوع</button>
+        <div class="stage-bar">
+          <div><b>اختاري الوقت</b><small id="selectedDayText"></small></div>
+          <button class="back" type="button" data-back="2">رجوع</button>
         </div>
-        <div class="time-grid" id="timeGrid"></div>
+        <div class="time-row" id="timeRow"></div>
       </div>
+
       <div class="stage" data-stage="4">
-        <div class="stage-title-row">
-          <div><b>آخر خطوة</b><small>نحتاج الاسم ورقم الجوال فقط</small></div>
-          <button class="back-btn" type="button" data-back="3">رجوع</button>
+        <div class="stage-bar final-title">
+          <div><b>تأكيد الحجز</b><small>باقي الاسم ورقم الجوال فقط</small></div>
+          <button class="back" type="button" data-back="3">رجوع</button>
         </div>
-
         <div class="summary" id="summaryBox"></div>
-
-        <form id="bookingForm" class="details-form">
-          <label>
-            <span>الاسم</span>
-            <input id="nameInput" name="name" autocomplete="name" placeholder="اكتبي اسمك" required>
-          </label>
-          <label>
-            <span>رقم الجوال</span>
-            <div class="phone-wrap"><span>+965</span><input id="phoneInput" name="phone" inputmode="numeric" autocomplete="tel" placeholder="XXXXXXXX" maxlength="8" required></div>
-          </label>
-          <button class="confirm-btn" type="submit">تأكيد طلب الحجز</button>
-          <p class="privacy-note">بعدها يفتح واتساب برسالة جاهزة للتأكيد.</p>
+        <form id="bookingForm" class="booking-form">
+          <label><span>الاسم</span><input id="nameInput" autocomplete="name" placeholder="اكتبي اسمك" required></label>
+          <label><span>رقم الجوال</span><div class="phone"><span>+965</span><input id="phoneInput" inputmode="numeric" autocomplete="tel" placeholder="XXXXXXXX" maxlength="8" required></div></label>
+          <button class="confirm" type="submit">تأكيد طلب الحجز</button>
         </form>
+        <p class="fine">يفتح واتساب برسالة جاهزة لتأكيد الموعد.</p>
       </div>
     </section>
   </main>
-
+  <a class="whatsapp-help" href="https://wa.me/96599577468">مساعدة واتساب</a>
   <script src="/app.js"></script>
 </body>
 </html>
