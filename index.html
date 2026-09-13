@@ -3,121 +3,90 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#7c031b">
-  <title>د. منى بن علي | حجز موعد</title>
-  <meta name="description" content="احجزي موعدك مع د. منى بن علي بخطوات واضحة وسريعة، ثم أكدي الطلب مباشرة عبر واتساب.">
+  <meta name="theme-color" content="#7f071f">
+  <title>حجز موعد | د. منى بن علي</title>
+  <meta name="description" content="احجزي موعدك مع د. منى بن علي بخطوات بسيطة وسريعة.">
   <link rel="icon" type="image/png" href="/assets/logo.png">
-  <link rel="canonical" href="https://quranwordle.com/">
-  <meta property="og:title" content="د. منى بن علي | حجز موعد">
-  <meta property="og:description" content="حجز بسيط وواضح للاستشارات والبرامج التدريبية.">
-  <meta property="og:image" content="https://quranwordle.com/assets/logo.png">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#top" aria-label="الصفحة الرئيسية">
-      <img src="/assets/logo.png" alt="شعار د. منى بن علي">
-      <span><strong>د. منى بن علي</strong><small>Consultancy Center</small></span>
+    <a class="brand" href="/" aria-label="الرئيسية">
+      <img src="/assets/logo.png" alt="د. منى بن علي">
+      <span>د. منى بن علي</span>
     </a>
-    <a class="help-link" href="https://wa.me/96599577468" target="_blank" rel="noopener">مساعدة عبر واتساب</a>
+    <a class="help" href="https://wa.me/96599577468">مساعدة عبر واتساب</a>
   </header>
 
-  <main id="top">
-    <section class="intro">
-      <div class="intro-copy">
-        <span class="eyebrow">حجز مباشر وسهل</span>
-        <h1>احجزي موعدك<br><em>بكل بساطة.</em></h1>
-        <p>اختاري الخدمة واليوم المناسب لك، واكتبي اسمك ورقمك. بعدها يفتح واتساب برسالة جاهزة للتأكيد.</p>
-      </div>
-      <div class="portrait-wrap" aria-hidden="true">
-        <img src="/assets/mona-portrait.jpg" alt="">
-      </div>
-    </section>
-
-    <section class="booking" aria-labelledby="bookingTitle">
+  <main class="booking-page">
+    <section class="booking-shell" aria-labelledby="bookingTitle">
       <div class="booking-head">
-        <span class="step-label">الخطوة 1 من 3</span>
-        <h2 id="bookingTitle">اختاري نوع الموعد</h2>
-        <p>اضغطي على الخيار المناسب لك.</p>
+        <p class="eyebrow">حجز موعد</p>
+        <h1 id="bookingTitle">اختاري موعدك بسهولة</h1>
+        <p id="stepHint">ابدئي باختيار نوع الموعد.</p>
       </div>
 
-      <fieldset class="service-list" id="services">
-        <legend class="sr-only">نوع الموعد</legend>
-        <label class="service-option">
-          <input type="radio" name="service" value="استشارة أونلاين — 45 دقيقة" checked>
-          <span class="radio-mark" aria-hidden="true"></span>
-          <span class="service-text"><strong>استشارة أونلاين</strong><small>جلسة خاصة عبر Zoom</small></span>
-          <span class="service-meta"><b>45</b><small>دقيقة</small></span>
-        </label>
-        <label class="service-option">
-          <input type="radio" name="service" value="استشارة مستعجلة — 60 دقيقة — 80 د.ك">
-          <span class="radio-mark" aria-hidden="true"></span>
-          <span class="service-text"><strong>استشارة مستعجلة</strong><small>أولوية في تنسيق الموعد</small></span>
-          <span class="service-meta"><b>80</b><small>د.ك</small></span>
-        </label>
-        <label class="service-option">
-          <input type="radio" name="service" value="كاريزما الحضور — 20 د.ك">
-          <span class="radio-mark" aria-hidden="true"></span>
-          <span class="service-text"><strong>كاريزما الحضور</strong><small>برنامج تدريبي عبر Zoom</small></span>
-          <span class="service-meta"><b>20</b><small>د.ك</small></span>
-        </label>
-      </fieldset>
-
-      <div class="divider"></div>
-
-      <div class="booking-head compact">
-        <span class="step-label">الخطوة 2 من 3</span>
-        <h2>اختاري اليوم المناسب</h2>
-        <p>هذه رغبتك المبدئية، وسيتم تأكيد الموعد النهائي عبر واتساب.</p>
+      <div class="progress" aria-label="مراحل الحجز">
+        <span class="progress-item active" data-progress="1">النوع</span>
+        <span class="progress-item" data-progress="2">اليوم</span>
+        <span class="progress-item" data-progress="3">الوقت</span>
+        <span class="progress-item" data-progress="4">التأكيد</span>
       </div>
-      <div class="date-list" id="dateList" role="radiogroup" aria-label="اختيار اليوم"></div>
-
-      <div class="period-block">
-        <p class="field-title">أي فترة تناسبك أكثر؟</p>
-        <div class="period-list" role="radiogroup" aria-label="اختيار الفترة">
-          <label class="period-option"><input type="radio" name="period" value="صباحاً" checked><span>صباحاً</span></label>
-          <label class="period-option"><input type="radio" name="period" value="عصراً"><span>عصراً</span></label>
-          <label class="period-option"><input type="radio" name="period" value="مساءً"><span>مساءً</span></label>
+      <div class="stage active" data-stage="1">
+        <div class="choice-list service-list">
+          <button class="choice service-choice" data-service="consultation" type="button">
+            <span><b>استشارة أونلاين</b><small>45 دقيقة عبر Zoom</small></span>
+            <strong>45 د</strong>
+          </button>
+          <button class="choice service-choice" data-service="urgent" type="button">
+            <span><b>استشارة مستعجلة</b><small>أولوية في تنسيق الموعد</small></span>
+            <strong>80 د.ك</strong>
+          </button>
+          <button class="choice service-choice" data-service="course" type="button">
+            <span><b>كاريزما الحضور</b><small>برنامج تدريبي عبر Zoom</small></span>
+            <strong>20 د.ك</strong>
+          </button>
         </div>
       </div>
 
-      <div class="divider"></div>
-
-      <div class="booking-head compact">
-        <span class="step-label">الخطوة 3 من 3</span>
-        <h2>اكتبي بياناتك</h2>
-        <p>نحتاج الاسم ورقم الجوال فقط لإرسال الطلب.</p>
-      </div>
-
-      <form id="bookingForm" novalidate>
-        <div class="field-row">
-          <label class="field"><span>الاسم</span><input id="name" name="name" type="text" autocomplete="name" placeholder="اكتبي اسمك" required></label>
-          <label class="field"><span>رقم الجوال</span><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" placeholder="5XXXXXXX" required></label>
+      <div class="stage" data-stage="2">
+        <div class="stage-title-row">
+          <div><b>اختاري اليوم</b><small>اسحبي لرؤية الأيام التالية</small></div>
+          <button class="back-btn" type="button" data-back="1">رجوع</button>
         </div>
-        <input id="selectedDate" name="selected_date" type="hidden">
-        <p id="formError" class="form-error" role="alert"></p>
-        <button class="submit-btn" type="submit"><span>إرسال طلب الحجز</span><small>يفتح واتساب برسالة جاهزة</small></button>
-      </form>
-
-      <div class="simple-note">
-        <strong>ما تحتاجين تحفظين شيء.</strong>
-        <span>بعد الضغط على الزر يفتح واتساب، وكل تفاصيل الطلب تكون مكتوبة تلقائياً.</span>
+        <div class="date-strip" id="dateStrip"></div>
       </div>
-    </section>
-    <section class="reassurance">
-      <div><strong>1:1</strong><span>جلسات فردية</span></div>
-      <div><strong>Zoom</strong><span>من أي مكان</span></div>
-      <div><strong>واتساب</strong><span>تأكيد ومتابعة</span></div>
+
+      <div class="stage" data-stage="3">
+        <div class="stage-title-row">
+          <div><b>اختاري الوقت</b><small id="chosenDateText"></small></div>
+          <button class="back-btn" type="button" data-back="2">رجوع</button>
+        </div>
+        <div class="time-grid" id="timeGrid"></div>
+      </div>
+      <div class="stage" data-stage="4">
+        <div class="stage-title-row">
+          <div><b>آخر خطوة</b><small>نحتاج الاسم ورقم الجوال فقط</small></div>
+          <button class="back-btn" type="button" data-back="3">رجوع</button>
+        </div>
+
+        <div class="summary" id="summaryBox"></div>
+
+        <form id="bookingForm" class="details-form">
+          <label>
+            <span>الاسم</span>
+            <input id="nameInput" name="name" autocomplete="name" placeholder="اكتبي اسمك" required>
+          </label>
+          <label>
+            <span>رقم الجوال</span>
+            <div class="phone-wrap"><span>+965</span><input id="phoneInput" name="phone" inputmode="numeric" autocomplete="tel" placeholder="XXXXXXXX" maxlength="8" required></div>
+          </label>
+          <button class="confirm-btn" type="submit">تأكيد طلب الحجز</button>
+          <p class="privacy-note">بعدها يفتح واتساب برسالة جاهزة للتأكيد.</p>
+        </form>
+      </div>
     </section>
   </main>
-
-  <footer class="footer">
-    <div>
-      <img src="/assets/logo.png" alt="">
-      <span>د. منى بن علي</span>
-    </div>
-    <a href="https://wa.me/96599577468" target="_blank" rel="noopener">واتساب</a>
-  </footer>
 
   <script src="/app.js"></script>
 </body>
