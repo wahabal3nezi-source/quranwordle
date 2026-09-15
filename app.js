@@ -12,7 +12,7 @@ const REAL_CONSULT_DATES=[
   {value:'2026-09-22',label:'الثلاثاء 22 سبتمبر',day:'الثلاثاء',num:'22',month:'سبتمبر',left:3},
   {value:'2026-09-23',label:'الأربعاء 23 سبتمبر',day:'الأربعاء',num:'23',month:'سبتمبر',left:4}
 ];
-const HINTS={1:'اختاري نوع الموعد أولاً',2:'اختاري اليوم المناسب',3:'اختاري الوقت المناسب',4:'تأكدي من بيانات الحجز'};
+const HINTS={1:'اختيار نوع الموعد أولاً',2:'اختيار اليوم المناسب',3:'اختاري الوقت المناسب',4:'تأكدي من بيانات الحجز'};
 function pad(n){return String(n).padStart(2,'0')}
 function iso(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
 function fmtDay(d){return new Intl.DateTimeFormat('ar-KW',{weekday:'long'}).format(d)}
